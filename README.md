@@ -1,6 +1,4 @@
-## Tecnologias
-
-Technologies used:
+## Technologies used
 
 1. Backend
 
