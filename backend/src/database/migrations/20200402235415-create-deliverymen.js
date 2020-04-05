@@ -11,7 +11,10 @@ module.exports = {
       avatar_id: {
         type: Sequelize.INTEGER,
         allowNull: true,
-        references: { model: 'files', key: 'id' },
+        references: {
+          model: 'files',
+          key: 'id',
+        },
         onDelete: 'SET NULL',
         onUpdate: 'CASCADE',
       },
