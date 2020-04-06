@@ -81,6 +81,37 @@ class DeliverymanController {
       email,
     });
   }
+
+  async update(req, res) {
+    const { id } = req.params;
+    const deliveryman = await Deliveryman.findByPk(id);
+
+    if (!deliveryman) {
+      return res.status(400).json({ error: 'Deliveryman does not exists.' });
+    }
+
+    const schema = Yup.object().shape({
+      name: Yup.string(),
+      avatar_id: Yup.string(),
+      email: Yust.string().email(,)
+    });
+
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: 'Validation fails.' });
+    }
+
+    const { name, avatar_id, email } = req.body;
+
+    await deliveryman.update({
+      name,
+      avatar_id,
+      email,
+    });
+
+    await deliveryman.save();
+
+    return res.json(deliveryman);
+  }
 }
 
 export default new DeliverymanController();
