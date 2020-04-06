@@ -4,6 +4,7 @@ import User from '../app/models/User';
 import Recipient from '../app/models/Recipient';
 import Files from '../app/models/File';
 import Deliveryman from '../app/models/Deliveryman';
+// import Orders from '../app/models/Orders';
 
 import databaseConfig from '../config/database';
 

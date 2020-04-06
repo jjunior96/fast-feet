@@ -2,10 +2,10 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('orders', {
       id: {
-        type: Sequelize.INTEGER,
-        autoIncrement: true,
         allowNull: false,
-        primatyKey: true,
+        autoIncriment: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER,
       },
 
       recipient_id: {
@@ -19,16 +19,16 @@ module.exports = {
         onDelete: 'SET NULL',
       },
 
-      // deliveryman_id: {
-      //   type: Sequelize.INTEGER,
-      //   allowNull: false,
-      //   references: {
-      //     model: 'deliverymen',
-      //     key: 'id',
-      //   },
-      //   onUpdate: 'CASCADE',
-      //   onDelete: 'SET NULL',
-      // },
+      deliveryman_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'deliverymen',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL',
+      },
 
       signature_id: {
         type: Sequelize.INTEGER,
