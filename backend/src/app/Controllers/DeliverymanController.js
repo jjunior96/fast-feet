@@ -93,7 +93,7 @@ class DeliverymanController {
     const schema = Yup.object().shape({
       name: Yup.string(),
       avatar_id: Yup.string(),
-      email: Yust.string().email(,)
+      email: Yup.string().email(),
     });
 
     if (!(await schema.isValid(req.body))) {
@@ -109,6 +109,19 @@ class DeliverymanController {
     });
 
     await deliveryman.save();
+
+    return res.json(deliveryman);
+  }
+
+  async destroy(req, res) {
+    const { id } = req.params;
+    const deliveryman = await Deliveryman.findByPk(id);
+
+    if (!deliveryman) {
+      return res.status(400).json({ error: 'Deliveryman does not exists.' });
+    }
+
+    deliveryman.destroy();
 
     return res.json(deliveryman);
   }
