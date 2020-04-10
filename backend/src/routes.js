@@ -3,6 +3,7 @@ import { Router } from 'express';
 import UserController from './app/controllers/UserController';
 import SessionController from './app/controllers/SessionController';
 import RecipientController from './app/controllers/RecipientController';
+// import FileController from './app/controllers/FileController';
 
 import authMiddleware from './app/middlewares/auth';
 
