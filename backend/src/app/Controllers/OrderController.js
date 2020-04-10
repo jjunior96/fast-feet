@@ -1,4 +1,4 @@
-// import * as Yup from 'yup';
+import * as Yup from 'yup';
 import { Op } from 'sequelize';
 
 import Orders from '../models/Orders';
@@ -156,6 +156,53 @@ class OrderController {
     });
 
     return res.json(order);
+  }
+
+  async store(req, res) {
+    const schema = Yup.object().shape({
+      product: Yup.string().required(),
+      recipient_id: Yup.string().required(),
+      deliveryman_id: Yup.number().required(),
+    });
+
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: 'Validation fails.' });
+    }
+
+    const { product, recipient_id, deliveryman_id, id } = req.body;
+
+    const deliveryman = await Deliveryman.findByPk(deliveryman_id);
+
+    if (!deliveryman) {
+      return res.status(401).json({ error: 'Deliveryman does not exists.' });
+    }
+
+    const recipient = await Recipient.findByPk(recipient_id);
+
+    if (!recipient) {
+      return res.status(401).json({ error: 'Recipient does not exists.' });
+    }
+
+    Orders.create({ product, recipient_id, deliveryman });
+
+    await Queue.add(newOrder.key, {
+      deliverymanName: deliveryman.name,
+      deliverymanEmail: deliveryman.email,
+      recipientName: recipient.name,
+      recipientStreet: recipient.street,
+      recipientNumber: recipient.number,
+      recipientCity: recipient.city,
+      recipientPostcode: recipient.postcode,
+      recipientCountry: recipient.country,
+      recipientComplement: recipient.complement,
+    });
+
+    return res.json({
+      id,
+      product,
+      recipient_id,
+      deliveryman_id,
+    });
   }
 }
 
