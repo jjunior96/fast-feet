@@ -204,6 +204,27 @@ class OrderController {
       deliveryman_id,
     });
   }
+
+  async update(req, res) {
+    const { id } = req.params;
+    const schema = Yup.object().shape({
+      product: Yup.string(),
+      recipient_id: Yup.number(),
+      deliveryman_id: Yup.number(),
+    });
+
+    const { product, recipient_id, deliveryman_id } = req.body;
+
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: 'Validation fails.' });
+    }
+
+    const order = await Orders.findByPk(id);
+
+    order.update({ product, recipient_id, deliveryman_id });
+
+    return res.json(order);
+  }
 }
 
-export default OrderController;
+export default new OrderController();
