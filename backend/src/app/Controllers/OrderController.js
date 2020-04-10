@@ -6,8 +6,8 @@ import Recipient from '../models/Recipient';
 import Deliveryman from '../models/Deliveryman';
 import File from '../models/File';
 
-// import Queue from '../../lib/Queue';
-// import newOrder from '../jobs/newOrder';
+import Queue from '../../lib/Queue';
+import newOrder from '../jobs/newOrder';
 
 class OrderController {
   async index(req, res) {
@@ -113,6 +113,49 @@ class OrderController {
       ],
     });
     return res.status(200).json(orders);
+  }
+
+  async show(req, res) {
+    const { id } = req.params;
+
+    const order = await Orders.findByPk(id, {
+      where: { canceled_at: null },
+      attributes: ['id', 'product', 'canceled_at', 'start_date', 'end_date'],
+      include: [
+        {
+          model: Deliveryman,
+          as: 'deliveryman',
+          attributes: ['id', 'name'],
+          include: [
+            {
+              model: File,
+              as: 'avatar',
+              attributes: ['url', 'path'],
+            },
+          ],
+        },
+        {
+          model: Recipient,
+          as: 'recipient',
+          attributes: [
+            'id',
+            'name',
+            'street',
+            'city',
+            'country',
+            'number',
+            'postcode',
+          ],
+        },
+        {
+          model: File,
+          as: 'signature',
+          attributes: ['url', 'path'],
+        },
+      ],
+    });
+
+    return res.json(order);
   }
 }
 
