@@ -19,8 +19,8 @@ routes.post('/sessions', SessionController.store);
 
 routes.post('/files', upload.single('file', FileController.store));
 
-routes.get('/recipients/:id', RecipientController.show);
 routes.get('/recipients', RecipientController.index);
+routes.get('/recipients/:id', RecipientController.show);
 
 // Rotas privadas
 routes.use(authMiddleware);
